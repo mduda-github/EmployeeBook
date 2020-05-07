@@ -1,51 +1,51 @@
 package View;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
-import java.awt.*;
 
 public class ImportExportPanel {
+  private JPanel importExportPanel;
+  private JButton importButton;
+  private JButton exportButton;
 
-    private JPanel importExportPanel;
-    private JButton importButton;
-    private JButton exportButton;
+  public ImportExportPanel() {
+    importExportPanel = new JPanel(new GridBagLayout());
 
-    public ImportExportPanel() {
+    // Add border
+    importExportPanel.setBorder(
+      BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
+    );
 
-        importExportPanel = new JPanel(new GridBagLayout());
+    // Add buttons
+    importButton = new JButton("Import");
+    exportButton = new JButton("Export");
 
-        // Add border
-        importExportPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+    // Setting dimension for buttons
+    Dimension addEmployeeLabelDimension = new Dimension(85, 25);
+    importButton.setPreferredSize(addEmployeeLabelDimension);
+    exportButton.setPreferredSize(addEmployeeLabelDimension);
 
-        // Add buttons
-        importButton = new JButton("Import");
-        exportButton = new JButton("Export");
+    // Position elements of layout in panel
+    GridBagConstraints c = new GridBagConstraints();
+    c.insets = new Insets(0, 10, 0, 10);
+    c.gridx = 0;
+    c.gridy = 0;
+    importExportPanel.add(importButton, c);
+    c.gridx = 0;
+    c.gridy = 2;
+    importExportPanel.add(exportButton, c);
+  }
 
-        // Setting dimension for buttons
-        Dimension addEmployeeLabelDimension = new Dimension(85,25);
-        importButton.setPreferredSize(addEmployeeLabelDimension);
-        exportButton.setPreferredSize(addEmployeeLabelDimension);
+  public JPanel getImportExportPanel() {
+    return importExportPanel;
+  }
 
-        // Position elements of layout in panel
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(0,10,0,10);
-        c.gridx = 0;
-        c.gridy = 0;
-        importExportPanel.add(importButton, c);
-        c.gridx = 0;
-        c.gridy = 2;
-        importExportPanel.add(exportButton, c);
-    }
+  public JButton getImportButton() {
+    return importButton;
+  }
 
-    public JPanel getImportExportPanel() {
-        return importExportPanel;
-    }
-
-    public JButton getImportButton() {
-        return importButton;
-    }
-
-    public JButton getExportButton() {
-        return exportButton;
-    }
+  public JButton getExportButton() {
+    return exportButton;
+  }
 }
