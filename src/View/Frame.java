@@ -1,12 +1,10 @@
 package View;
 
 import Model.Employee;
-import Model.EmployeeList;
-import Model.PositionComponent;
+import Model.TableModel;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 public class Frame {
@@ -16,21 +14,15 @@ public class Frame {
   private ButtonsPanel buttonsPanel;
   private ImportExportPanel importExportPanel;
 
-  private DefaultTableModel tableModel;
+  private TableModel tableModel;
   private JTable table;
   private TableColumn column;
   private JScrollPane scrollPane;
-
-  private String[] tableHeaders;
-  private EmployeeList data;
 
   public Frame() {
     // Create frame
     frame = new JFrame();
     frame.getContentPane().setLayout(new BorderLayout());
-
-    // Create model
-    data = new EmployeeList();
 
     // Add Add employee panel to frame
     addEmployeePanel = new AddEmployeePanel();
@@ -50,24 +42,7 @@ public class Frame {
       .getContentPane()
       .add(importExportPanel.getImportExportPanel(), BorderLayout.EAST);
 
-    tableHeaders =
-      new String[] {
-        "#",
-        "First Name",
-        "Last Name",
-        "Position",
-        "Length of service",
-        "Salary",
-      };
-    tableModel =
-      new DefaultTableModel(tableHeaders, 0) {
-
-        @Override
-        public boolean isCellEditable(int row, int column) {
-          return false;
-        }
-      };
-    addDataToTable(tableModel, data);
+    tableModel = new TableModel();
     table = new JTable(tableModel);
 
     for (int i = 0; i < 6; i++) {
@@ -109,66 +84,9 @@ public class Frame {
     frame.setVisible(true);
   }
 
-  public void addDataToTable(
-    DefaultTableModel model,
-    EmployeeList employeeList
-  ) {
-    model.setRowCount(0);
-    if (employeeList != null) {
-      for (int i = 0; i < employeeList.getList().size(); i++) {
-        int lp = i + 1;
-        String name = employeeList.getList().get(i).getName();
-        String surname = employeeList.getList().get(i).getSurname();
-        String position = employeeList
-          .getList()
-          .get(i)
-          .getPosition()
-          .toString();
-        String dateOfEmployment = employeeList
-          .getList()
-          .get(i)
-          .getDateOfEmployment();
-        String salary = String.valueOf(
-          employeeList.getList().get(i).getSalary()
-        );
-
-        Object[] row = {
-          lp,
-          name,
-          surname,
-          position,
-          dateOfEmployment,
-          salary,
-        };
-
-        model.addRow(row);
-      }
-    }
-  }
-
-  public void showDialog(String type, String message) {
-    if (type.equals("Info")) {
-      JOptionPane.showMessageDialog(
-        null,
-        message,
-        "Info",
-        JOptionPane.INFORMATION_MESSAGE
-      );
-    }
-    if (type.equals("Error")) {
-      JOptionPane.showMessageDialog(
-        null,
-        message,
-        "Error",
-        JOptionPane.ERROR_MESSAGE
-      );
-    }
-  }
-
   public void addEmployeeAction() {
     if (addEmployeePanel.validateInputs()) {
-      data.addEmployee(addEmployeePanel.getEmployee());
-      addDataToTable(tableModel, data);
+      tableModel.addEmployee(addEmployeePanel.getEmployee());
       addEmployeePanel.clearInputs();
     }
     buttonsPanel.getAddButton().setFocusPainted(false);
@@ -176,9 +94,7 @@ public class Frame {
 
   public void deleteEmployeeAction() {
     if (table.getSelectedRow() != -1) {
-      data.removeEmployee(table.getSelectedRow());
-      tableModel.removeRow(table.getSelectedRow());
-      addDataToTable(tableModel, data);
+      tableModel.deleteEmployee(table.getSelectedRow());
       addEmployeePanel.clearInputs();
       buttonsPanel.getDeleteButton().setFocusPainted(false);
 
@@ -202,7 +118,7 @@ public class Frame {
       buttonsPanel.getAddButton().setEnabled(false);
       buttonsPanel.getSaveButton().setEnabled(true);
 
-      Employee employee = data.getEmployee(table.getSelectedRow());
+      Employee employee = tableModel.getEmployee(table.getSelectedRow());
       addEmployeePanel.setEmployeeDataInInputs(employee);
 
       buttonsPanel.getEditButton().setFocusPainted(false);
@@ -214,20 +130,16 @@ public class Frame {
 
   public void saveEmployeeAction() {
     if (table.getSelectedRow() != -1) {
-      boolean areInputsValid = addEmployeePanel.validateInputs();
-      if (areInputsValid) {
-        data.updateEmployee(
+      if (addEmployeePanel.validateInputs()) {
+        tableModel.updateEmployee(
           table.getSelectedRow(),
           addEmployeePanel.getEmployee()
         );
-
         showDialog("Info", "Selected employee has been updated");
 
         // Disable save button and enable add button
         buttonsPanel.getAddButton().setEnabled(true);
         buttonsPanel.getSaveButton().setEnabled(false);
-
-        addDataToTable(tableModel, data);
 
         // Change name of the panel
         addEmployeePanel.changeTitle("Add an employee");
@@ -235,6 +147,26 @@ public class Frame {
         addEmployeePanel.clearInputs();
         buttonsPanel.getSaveButton().setFocusPainted(false);
       }
+      buttonsPanel.getAddButton().setFocusPainted(false);
+    }
+  }
+
+  public void showDialog(String type, String message) {
+    if (type.equals("Info")) {
+      JOptionPane.showMessageDialog(
+        null,
+        message,
+        "Info",
+        JOptionPane.INFORMATION_MESSAGE
+      );
+    }
+    if (type.equals("Error")) {
+      JOptionPane.showMessageDialog(
+        null,
+        message,
+        "Error",
+        JOptionPane.ERROR_MESSAGE
+      );
     }
   }
 }
