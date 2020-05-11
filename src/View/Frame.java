@@ -3,9 +3,13 @@ package View;
 import Model.Employee;
 import Model.TableModel;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableRowSorter;
 
 public class Frame {
   private JFrame frame;
@@ -13,9 +17,12 @@ public class Frame {
   private AddEmployeePanel addEmployeePanel;
   private ButtonsPanel buttonsPanel;
   private ImportExportPanel importExportPanel;
+  private SearchPanel searchPanel;
+  private SearchBySalaryPanel searchBySalaryPanel;
 
   private TableModel tableModel;
   private JTable table;
+  private TableRowSorter rowSorter;
   private TableColumn column;
   private JScrollPane scrollPane;
 
@@ -24,26 +31,55 @@ public class Frame {
     frame = new JFrame();
     frame.getContentPane().setLayout(new BorderLayout());
 
-    // Add Add employee panel to frame
+    // Add Center panel
+    JPanel centerPanel = new JPanel();
+    centerPanel.setLayout(new GridBagLayout());
+
+    // Add Add employee panel to Center panel
     addEmployeePanel = new AddEmployeePanel();
-    frame
-      .getContentPane()
-      .add(addEmployeePanel.getAddEmployeePanel(), BorderLayout.WEST);
+    GridBagConstraints constrains = new GridBagConstraints();
+    constrains.fill = GridBagConstraints.BOTH;
+    constrains.gridx = 0;
+    constrains.gridy = 0;
+    centerPanel.add(addEmployeePanel.getAddEmployeePanel(), constrains);
 
-    // Add Buttons panel to frame
+    // Add Buttons panel to Center panel
     buttonsPanel = new ButtonsPanel();
-    frame
-      .getContentPane()
-      .add(buttonsPanel.getButtonsPanel(), BorderLayout.CENTER);
+    constrains = new GridBagConstraints();
+    constrains.fill = GridBagConstraints.BOTH;
+    constrains.gridx = 1;
+    constrains.gridy = 0;
+    centerPanel.add(buttonsPanel.getButtonsPanel(), constrains);
 
-    // Add ImportExport panel to frame
+    // Add ImportExport panel to Center panel
     importExportPanel = new ImportExportPanel();
-    frame
-      .getContentPane()
-      .add(importExportPanel.getImportExportPanel(), BorderLayout.EAST);
+    constrains.fill = GridBagConstraints.BOTH;
+    constrains.gridx = 2;
+    constrains.gridy = 0;
+    centerPanel.add(importExportPanel.getImportExportPanel(), constrains);
+
+    // Add Search panel to Center panel
+    searchPanel = new SearchPanel();
+    constrains.fill = GridBagConstraints.BOTH;
+    constrains.gridx = 0;
+    constrains.gridy = 1;
+    constrains.gridwidth = 3;
+    centerPanel.add(searchPanel.getSearchPanel(), constrains);
+
+    // Add SearchBySalary panel to Center panel
+    searchBySalaryPanel = new SearchBySalaryPanel();
+    constrains.fill = GridBagConstraints.BOTH;
+    constrains.gridx = 0;
+    constrains.gridy = 2;
+    constrains.gridwidth = 3;
+    centerPanel.add(searchBySalaryPanel.getSearchBySalaryPanel(), constrains);
 
     tableModel = new TableModel();
     table = new JTable(tableModel);
+    table.setAutoCreateRowSorter(true);
+
+    rowSorter = new TableRowSorter(table.getModel());
+    table.setRowSorter(rowSorter);
 
     for (int i = 0; i < 6; i++) {
       column = table.getColumnModel().getColumn(i);
@@ -56,12 +92,27 @@ public class Frame {
       }
     }
 
+    // Add Search panel to Center panel
     scrollPane = new JScrollPane(table);
     scrollPane.setBorder(
       BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
     );
+    scrollPane.setHorizontalScrollBarPolicy(
+      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
+    );
+    scrollPane.setVerticalScrollBarPolicy(
+      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+    );
+    constrains.fill = GridBagConstraints.BOTH;
+    constrains.gridx = 0;
+    constrains.gridy = 3;
+    constrains.gridwidth = 3;
+    constrains.ipady = 300;
+    constrains.insets = new Insets(5, 5, 5, 5);
+    centerPanel.add(scrollPane, constrains);
 
-    frame.getContentPane().add(scrollPane, BorderLayout.SOUTH);
+    // Add Center panel to frame
+    frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
     // Add new employee to the table
     buttonsPanel.getAddButton().addActionListener(e -> addEmployeeAction());
@@ -76,6 +127,33 @@ public class Frame {
 
     // Save an employee
     buttonsPanel.getSaveButton().addActionListener(e -> saveEmployeeAction());
+
+    // Search an employee
+    searchPanel
+      .getSearchTextField()
+      .addKeyListener(
+        new KeyAdapter() {
+
+          @Override
+          public void keyReleased(KeyEvent e) {
+            rowSorter.setRowFilter(
+              RowFilter.regexFilter(
+                "(?i)" + searchPanel.getSearchTextField().getText()
+              )
+            );
+          }
+        }
+      );
+
+    // Search by salary
+    searchBySalaryPanel
+      .getSearchButton()
+      .addActionListener(e -> searchBySalaryAction());
+
+    // Clear the search by salary filter
+    searchBySalaryPanel
+      .getClearButton()
+      .addActionListener(e -> clearSearchBySalaryAction());
 
     screenDim = Toolkit.getDefaultToolkit().getScreenSize();
     frame.setSize(800, 650);
@@ -151,7 +229,32 @@ public class Frame {
     }
   }
 
-  public void showDialog(String type, String message) {
+  public void searchBySalaryAction() {
+    if (searchBySalaryPanel.validateInputs()) {
+      rowSorter.setRowFilter(
+        new RowFilter<TableModel, Integer>() {
+
+          @Override
+          public boolean include(
+            Entry<? extends TableModel, ? extends Integer> entry
+          ) {
+            int from = searchBySalaryPanel.getFromSalary();
+            int to = searchBySalaryPanel.getToSalary();
+            int x = Integer.parseInt(entry.getStringValue(5));
+            return x >= from && x <= to;
+          }
+        }
+      );
+    }
+    searchBySalaryPanel.getSearchButton().setFocusPainted(false);
+  }
+
+  public void clearSearchBySalaryAction() {
+    rowSorter.setRowFilter(null);
+    searchBySalaryPanel.clearInputs();
+  }
+
+  public static void showDialog(String type, String message) {
     if (type.equals("Info")) {
       JOptionPane.showMessageDialog(
         null,

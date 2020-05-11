@@ -34,6 +34,150 @@ public class TableModel extends AbstractTableModel {
         4500
       )
     );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
+    employees.add(
+      new Model.Employee(
+        "Samanta",
+        "Southampton",
+        Model.PositionComponent.RECEPTIONIST,
+        "12-06-2012",
+        4500
+      )
+    );
   }
 
   @Override

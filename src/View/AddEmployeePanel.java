@@ -6,7 +6,6 @@ import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 
 public class AddEmployeePanel {
   private JPanel addEmployeePanel;
@@ -118,7 +117,7 @@ public class AddEmployeePanel {
   protected boolean validateInputs() {
     String stringPattern = "^[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż-]+$";
     String datePattern =
-      "^(0[1-9]|[12]\\d|3[01])-(0[1-9]|1[012])-(19|20)\\d\\d$";
+      "^(0[1-9]|[12]\\d|3[01])-(0[1-9]|1[012])-(19\\d\\d|20\\d\\d)$";
     String salaryPattern = "^\\d+$";
 
     if (!validateInput(nameTextField.getText(), stringPattern)) {
@@ -177,25 +176,5 @@ public class AddEmployeePanel {
     positionComboBox.setSelectedItem(employee.getPosition());
     dateOfEmploymentFormattedTextField.setText(employee.getDateOfEmployment());
     salaryTextField.setText(String.valueOf(employee.getSalary()));
-  }
-
-  public JTextField getNameTextField() {
-    return nameTextField;
-  }
-
-  public JTextField getSurnameTextField() {
-    return surnameTextField;
-  }
-
-  public JComboBox getPositionComboBox() {
-    return positionComboBox;
-  }
-
-  public JFormattedTextField getDateOfEmploymentFormattedTextField() {
-    return dateOfEmploymentFormattedTextField;
-  }
-
-  public JTextField getSalaryTextField() {
-    return salaryTextField;
   }
 }

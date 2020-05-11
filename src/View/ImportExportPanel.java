@@ -2,7 +2,6 @@ package View;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
 
 public class ImportExportPanel {
   private JPanel importExportPanel;
@@ -13,9 +12,7 @@ public class ImportExportPanel {
     importExportPanel = new JPanel(new GridBagLayout());
 
     // Add border
-    importExportPanel.setBorder(
-      BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
-    );
+    importExportPanel.setBorder(BorderFactory.createTitledBorder("File"));
 
     // Add buttons
     importButton = new JButton("Import");

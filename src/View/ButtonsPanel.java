@@ -16,9 +16,7 @@ public class ButtonsPanel {
     buttonsPanel = new JPanel(new GridBagLayout());
 
     // Add border
-    buttonsPanel.setBorder(
-      BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
-    );
+    buttonsPanel.setBorder(BorderFactory.createTitledBorder("Controls"));
 
     // Add buttons
     addButton = new JButton("Add");
