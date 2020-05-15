@@ -1,11 +1,12 @@
 package View;
 
 import Model.Employee;
+import Model.PositionComponent;
 import Model.TableModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.TableColumn;
@@ -81,6 +82,8 @@ public class Frame {
     rowSorter = new TableRowSorter(table.getModel());
     table.setRowSorter(rowSorter);
 
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
     for (int i = 0; i < 6; i++) {
       column = table.getColumnModel().getColumn(i);
       if (i == 0) {
@@ -155,6 +158,16 @@ public class Frame {
       .getClearButton()
       .addActionListener(e -> clearSearchBySalaryAction());
 
+    // Export employee list to CSV file
+    importExportPanel
+      .getExportButton()
+      .addActionListener(e -> importExportPanel.exportAction(table));
+
+    // Import employee list from CSV file
+    importExportPanel
+      .getImportButton()
+      .addActionListener(e -> importExportPanel.importAction(table));
+
     screenDim = Toolkit.getDefaultToolkit().getScreenSize();
     frame.setSize(800, 650);
     frame.setLocation(screenDim.width / 4, screenDim.height / 4);
@@ -164,7 +177,8 @@ public class Frame {
 
   public void addEmployeeAction() {
     if (addEmployeePanel.validateInputs()) {
-      tableModel.addEmployee(addEmployeePanel.getEmployee());
+      TableModel tm = (TableModel) table.getModel();
+      tm.addEmployee(addEmployeePanel.getEmployee());
       addEmployeePanel.clearInputs();
     }
     buttonsPanel.getAddButton().setFocusPainted(false);
@@ -172,7 +186,8 @@ public class Frame {
 
   public void deleteEmployeeAction() {
     if (table.getSelectedRow() != -1) {
-      tableModel.deleteEmployee(table.getSelectedRow());
+      TableModel tm = (TableModel) table.getModel();
+      tm.deleteEmployee(table.getSelectedRow());
       addEmployeePanel.clearInputs();
       buttonsPanel.getDeleteButton().setFocusPainted(false);
 
@@ -196,7 +211,8 @@ public class Frame {
       buttonsPanel.getAddButton().setEnabled(false);
       buttonsPanel.getSaveButton().setEnabled(true);
 
-      Employee employee = tableModel.getEmployee(table.getSelectedRow());
+      TableModel tm = (TableModel) table.getModel();
+      Employee employee = tm.getEmployee(table.getSelectedRow());
       addEmployeePanel.setEmployeeDataInInputs(employee);
 
       buttonsPanel.getEditButton().setFocusPainted(false);
@@ -209,7 +225,8 @@ public class Frame {
   public void saveEmployeeAction() {
     if (table.getSelectedRow() != -1) {
       if (addEmployeePanel.validateInputs()) {
-        tableModel.updateEmployee(
+        TableModel tm = (TableModel) table.getModel();
+        tm.updateEmployee(
           table.getSelectedRow(),
           addEmployeePanel.getEmployee()
         );

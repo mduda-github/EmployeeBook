@@ -13,171 +13,14 @@ public class TableModel extends AbstractTableModel {
     "Salary",
   };
 
-  public ArrayList<Employee> employees = new ArrayList<>();
+  public ArrayList<Employee> employees;
 
   public TableModel() {
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
-    employees.add(
-      new Model.Employee(
-        "Samanta",
-        "Southampton",
-        Model.PositionComponent.RECEPTIONIST,
-        "12-06-2012",
-        4500
-      )
-    );
+    employees = new ArrayList<>();
+  }
+
+  public TableModel(ArrayList<Employee> employeeArrayList) {
+    employees = employeeArrayList;
   }
 
   @Override
@@ -196,6 +39,10 @@ public class TableModel extends AbstractTableModel {
 
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
+    if (employees.size() == 0) {
+      return "";
+    }
+
     Employee employee = employees.get(rowIndex);
 
     switch (columnIndex) {
@@ -215,11 +62,6 @@ public class TableModel extends AbstractTableModel {
         return null;
     }
   }
-
-  //    public void setValueAt(Object value, int row, int col) {
-  //        data[row][col] = value;
-  //        fireTableCellUpdated(row, col);
-  //    }
 
   public void addEmployee(Employee employee) {
     employees.add(employee);
