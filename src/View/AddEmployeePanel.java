@@ -40,7 +40,7 @@ public class AddEmployeePanel {
     surnameTextField = new JTextField();
     positionComboBox = new JComboBox(Model.PositionComponent.values());
     dateOfEmploymentFormattedTextField = new JFormattedTextField();
-    dateOfEmploymentFormattedTextField.setText("dd-mm-yyyy");
+    dateOfEmploymentFormattedTextField.setText("yyyy-MM-dd");
     salaryTextField = new JTextField();
 
     // Setting dimension for labels
@@ -109,7 +109,7 @@ public class AddEmployeePanel {
     nameTextField.setText("");
     surnameTextField.setText("");
     positionComboBox.setSelectedIndex(0);
-    dateOfEmploymentFormattedTextField.setText("dd-mm-yyyy");
+    dateOfEmploymentFormattedTextField.setText("yyyy-MM-dd");
     salaryTextField.setText("");
     validationLabel.setText("");
   }
@@ -117,7 +117,7 @@ public class AddEmployeePanel {
   protected boolean validateInputs() {
     String stringPattern = "^[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż-]+$";
     String datePattern =
-      "^(0[1-9]|[12]\\d|3[01])-(0[1-9]|1[012])-(19\\d\\d|20\\d\\d)$";
+      "^(19\\d\\d|20\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12]\\d|3[01])$";
     String salaryPattern = "^\\d+$";
 
     if (!validateInput(nameTextField.getText(), stringPattern)) {

@@ -1,9 +1,7 @@
 package View;
 
-import Model.PositionComponent;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
 
 public class ButtonsPanel {
   private JPanel buttonsPanel;

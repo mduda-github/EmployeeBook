@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class TableModel extends AbstractTableModel {
-  private String[] columnNames = new String[] {
+  final String[] columnNames = new String[] {
     "#",
     "First Name",
     "Last Name",
@@ -12,8 +12,7 @@ public class TableModel extends AbstractTableModel {
     "Length of service",
     "Salary",
   };
-
-  public ArrayList<Employee> employees;
+  private ArrayList<Employee> employees;
 
   public TableModel() {
     employees = new ArrayList<>();

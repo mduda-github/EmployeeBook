@@ -3,7 +3,6 @@ package View;
 import static View.Frame.showDialog;
 
 import Model.Employee;
-import Model.PositionComponent;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -122,6 +121,26 @@ public class ImportExportPanel {
     }
   }
 
+  private boolean validateAttributes(String[] attr) {
+    if (attr.length != 6) {
+      return false;
+    }
+    try {
+      Enum.valueOf(
+        Model.PositionComponent.class,
+        attr[3].toUpperCase().replace(" ", "_")
+      );
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
+    try {
+      Integer.parseInt(attr[5]);
+    } catch (NumberFormatException e) {
+      return false;
+    }
+    return true;
+  }
+
   private ArrayList<Employee> importFromCSV(String fullFilePath) {
     ArrayList<Employee> employees = new ArrayList<>();
     Path pathToFile = Paths.get(fullFilePath);
@@ -130,18 +149,22 @@ public class ImportExportPanel {
       String line1 = null;
       while ((line1 = br.readLine()) != null) {
         String[] attributes = line1.split(",");
-        employees.add(
-          new Employee(
-            attributes[1],
-            attributes[2],
-            Enum.valueOf(
-              Model.PositionComponent.class,
-              attributes[3].toUpperCase().replace(" ", "_")
-            ),
-            attributes[4],
-            Integer.parseInt(attributes[5])
-          )
-        );
+        if (validateAttributes(attributes)) {
+          employees.add(
+            new Employee(
+              attributes[1],
+              attributes[2],
+              Enum.valueOf(
+                Model.PositionComponent.class,
+                attributes[3].toUpperCase().replace(" ", "_")
+              ),
+              attributes[4],
+              Integer.parseInt(attributes[5])
+            )
+          );
+        } else {
+          showDialog("Error", "Import incomplete");
+        }
       }
     } catch (IOException e) {
       showDialog("Error", "Import unsuccessful");

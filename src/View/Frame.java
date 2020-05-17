@@ -1,12 +1,10 @@
 package View;
 
 import Model.Employee;
-import Model.PositionComponent;
 import Model.TableModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.TableColumn;
@@ -28,10 +26,6 @@ public class Frame {
   private JScrollPane scrollPane;
 
   public Frame() {
-    // Create frame
-    frame = new JFrame();
-    frame.getContentPane().setLayout(new BorderLayout());
-
     // Add Center panel
     JPanel centerPanel = new JPanel();
     centerPanel.setLayout(new GridBagLayout());
@@ -84,27 +78,10 @@ public class Frame {
 
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    for (int i = 0; i < 6; i++) {
-      column = table.getColumnModel().getColumn(i);
-      if (i == 0) {
-        column.setPreferredWidth(20);
-      } else if (i == 3 || i == 4) {
-        column.setPreferredWidth(130);
-      } else {
-        column.setPreferredWidth(80);
-      }
-    }
-
     // Add Search panel to Center panel
     scrollPane = new JScrollPane(table);
     scrollPane.setBorder(
       BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
-    );
-    scrollPane.setHorizontalScrollBarPolicy(
-      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
-    );
-    scrollPane.setVerticalScrollBarPolicy(
-      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
     );
     constrains.fill = GridBagConstraints.BOTH;
     constrains.gridx = 0;
@@ -113,9 +90,6 @@ public class Frame {
     constrains.ipady = 300;
     constrains.insets = new Insets(5, 5, 5, 5);
     centerPanel.add(scrollPane, constrains);
-
-    // Add Center panel to frame
-    frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
     // Add new employee to the table
     buttonsPanel.getAddButton().addActionListener(e -> addEmployeeAction());
@@ -139,11 +113,13 @@ public class Frame {
 
           @Override
           public void keyReleased(KeyEvent e) {
+            rowSorter = new TableRowSorter(table.getModel());
             rowSorter.setRowFilter(
               RowFilter.regexFilter(
                 "(?i)" + searchPanel.getSearchTextField().getText()
               )
             );
+            table.setRowSorter(rowSorter);
           }
         }
       );
@@ -168,9 +144,12 @@ public class Frame {
       .getImportButton()
       .addActionListener(e -> importExportPanel.importAction(table));
 
+    frame = new JFrame();
     screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-    frame.setSize(800, 650);
+    frame.pack();
+    frame.setSize(800, 750);
     frame.setLocation(screenDim.width / 4, screenDim.height / 4);
+    frame.setContentPane(centerPanel);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
   }
@@ -248,6 +227,7 @@ public class Frame {
 
   public void searchBySalaryAction() {
     if (searchBySalaryPanel.validateInputs()) {
+      rowSorter = new TableRowSorter(table.getModel());
       rowSorter.setRowFilter(
         new RowFilter<TableModel, Integer>() {
 
@@ -262,6 +242,7 @@ public class Frame {
           }
         }
       );
+      table.setRowSorter(rowSorter);
     }
     searchBySalaryPanel.getSearchButton().setFocusPainted(false);
   }
