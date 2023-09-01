@@ -32,7 +32,7 @@ EmployeeBook offers a comprehensive set of features for effective employee data 
 
 - **Java Swing**: The GUI of the application is built using Java Swing, providing a user-friendly and interactive experience.
 
-- **Java 8 and Above (JavaScript ES6)**: Modern Java features are leveraged to ensure efficient data handling and manipulation.
+- **Java 8**: Modern Java features are leveraged to ensure efficient data handling and manipulation.
 
 ## Error Handling
 
